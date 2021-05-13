@@ -65,7 +65,7 @@ module Fluent
           es.each do |time, record|
             socket.send(record << "\n", 0)
           end
-	}
+        }
       end
 
       #### Sync Buffered Output ##############################
@@ -81,7 +81,7 @@ module Fluent
           chunk.each do |time, record|
             socket.send(record << "\n", 0)
           end
-	}
+        }
       end
 
       private
