@@ -24,7 +24,7 @@ module Fluent
       config_param :host, :string, :default => nil
       config_param :port, :integer, :default => 514
       config_param :send_timeout, :time, :default => 60
-      config_param :connect_timeout, :time, :default => 5
+      config_param :connect_timeout, :time, :default => 10
 
       config_section :buffer do
         config_set_default :flush_mode, :interval
@@ -56,7 +56,7 @@ module Fluent
 
       #### Non-Buffered Output #############################
       def process(tag, es)
-        TCPSocket.open(@host, @port, connect_timeout=@connect_timeout) {|socket|
+        Socket.tcp(@host, @port, connect_timeout: @connect_timeout) {|socket|
           opt = [1, @send_timeout.to_i].pack('I!I!')  # { int l_onoff; int l_linger; }
           sock.setsockopt(Socket::SOL_SOCKET, Socket::SO_LINGER, opt)
           opt = [@send_timeout.to_i, 0].pack('L!L!')  # struct timeval
@@ -72,7 +72,7 @@ module Fluent
       def write(chunk)
         return if chunk.empty?
 
-        TCPSocket.open(@host, @port, connect_timeout=@connect_timeout) {|socket|
+        Socket.tcp(@host, @port, connect_timeout: @connect_timeout) {|socket|
           opt = [1, @send_timeout.to_i].pack('I!I!')  # { int l_onoff; int l_linger; }
           socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_LINGER, opt)
           opt = [@send_timeout.to_i, 0].pack('L!L!')  # struct timeval
