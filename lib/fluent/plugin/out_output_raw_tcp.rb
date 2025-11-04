@@ -65,7 +65,7 @@ module Fluent
           es.each do |time, record|
             socket.write(record << "\n")
           end
-          sock.flush
+          socket.flush
         }
       end
 
@@ -82,7 +82,7 @@ module Fluent
           chunk.each do |time, record|
             socket.write(record << "\n")
           end
-          sock.flush
+          socket.flush
         }
       end
 
