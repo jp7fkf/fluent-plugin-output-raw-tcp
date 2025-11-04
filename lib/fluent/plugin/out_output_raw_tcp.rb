@@ -63,7 +63,7 @@ module Fluent
           sock.setsockopt(Socket::SOL_SOCKET, Socket::SO_SNDTIMEO, opt)
 
           es.each do |time, record|
-            socket.send(record << "\n", 0)
+            socket.write(record << "\n")
           end
         }
       end
@@ -79,7 +79,7 @@ module Fluent
           socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_SNDTIMEO, opt)
 
           chunk.each do |time, record|
-            socket.send(record << "\n", 0)
+            socket.write(record << "\n")
           end
         }
       end
